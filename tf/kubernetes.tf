@@ -1,4 +1,4 @@
-resource "digitalocean_kubernetes_cluster" "sandbox-cluster" {
+resource "digitalocean_kubernetes_cluster" "k8s-cluster" {
   name    = var.k8s_cluster_name
   region  = var.k8s_region
   version = var.k8s_version
