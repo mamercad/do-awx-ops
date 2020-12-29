@@ -52,6 +52,11 @@
       private: no
       default: ansible/awx:15.0.0
 
+    - name: p_tower_web_svc_type
+      prompt: Tower web service type (ClusterIP, LoadBalancer, etc)
+      private: no
+      default: LoadBalancer
+
   tasks:
 
     - name: Include the kubernetes/awx-operator role
@@ -76,3 +81,4 @@
         tower_hostname: "{{ p_tower_hostname }}"
         tower_task_image: "{{ p_tower_task_image }}"
         tower_web_image: "{{ p_tower_web_image }}"
+        tower_web_svc_type: "{{ p_tower_web_svc_type }}"

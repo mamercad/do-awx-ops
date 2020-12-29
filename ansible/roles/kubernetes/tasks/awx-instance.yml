@@ -16,3 +16,16 @@
         tower_broadcast_websocket_secret: "{{ tower_broadcast_websocket_secret | default('changeme') }}"
         tower_ingress_type: Ingress
         tower_hostname: "{{ tower_hostname | default('awx.mycompany.com') }}"
+
+- name: Patch the awx-service type
+  community.kubernetes.k8s:
+    state: present
+    context: "{{ kubernetes_context }}"
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: awx-service
+        namespace: "{{ kubernetes_namespace }}"
+      spec:
+        type: "{{ tower_web_svc_type }}"
