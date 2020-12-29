@@ -8,3 +8,10 @@ resource "digitalocean_kubernetes_cluster" "k8s-cluster" {
     node_count = var.k8s_worker_count
   }
 }
+resource "digitalocean_droplet" "db-droplet" {
+  image    = var.db_droplet_image
+  region   = var.db_droplet_region
+  name     = var.db_droplet_name
+  size     = var.db_droplet_size
+  ssh_keys = [var.db_droplet_ssh_keys]
+}
