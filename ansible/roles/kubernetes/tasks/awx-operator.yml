@@ -1,4 +1,4 @@
-# - name: Deploy the AWX Operator
+# - name: Deploy the AWX Operator # https://raw.githubusercontent.com/ansible/awx-operator/devel/deploy/awx-operator.yaml
 #   community.kubernetes.k8s:
 #     state: present
 #     definition: "{{ lookup('url', awx_operator_manifest, split_lines=False) | from_yaml_all | list }}"

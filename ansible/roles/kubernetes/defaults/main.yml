@@ -1,1 +1,0 @@
-awx_operator_manifest: https://raw.githubusercontent.com/ansible/awx-operator/devel/deploy/awx-operator.yaml
