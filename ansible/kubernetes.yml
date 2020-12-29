@@ -1,0 +1,71 @@
+---
+- name: awx-ops/ansible/kubernetes
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  become: no
+
+  vars_prompt:
+
+    - name: p_kubernetes_context
+      prompt: Kubernetes context
+      private: no
+      default: do-nyc1-sandbox
+
+    - name: p_tower_admin_user
+      prompt: Username of the Tower admin
+      private: no
+      default: admin
+
+    - name: p_tower_admin_email
+      prompt: Email address of the Tower admin
+      private: no
+      default: admin@example.com
+
+    - name: p_tower_admin_password
+      prompt: Password of the Tower admin
+      private: yes
+      default: supersecretpassword123!!!
+
+    - name: p_tower_broadcast_websocket_secret
+      prompt: Secret of the Tower broadcast websocket
+      private: yes
+      default: supersecretpassword123!!!
+
+    - name: p_tower_hostname
+      prompt: Hostname of the Tower instance (Ingress)
+      private: no
+      default: awx.example.com
+
+    - name: p_tower_task_image
+      prompt: Tower task image version/tag
+      private: no
+      default: ansible/awx:15.0.0
+
+    - name: p_tower_web_image
+      prompt: Tower web image version/tag
+      private: no
+      default: ansible/awx:15.0.0
+
+  tasks:
+
+    - name: Include the kubernetes/awx-operator role
+      include_role:
+        name: kubernetes
+        tasks_from: awx-operator.yml
+      vars:
+        kubernetes_context: "{{ p_kubernetes_context }}"
+
+    - name: Include the kubernetes/awx-instance role
+      include_role:
+        name: kubernetes
+        tasks_from: awx-instance.yml
+      vars:
+        kubernetes_context: "{{ p_kubernetes_context }}"
+        tower_admin_user: "{{ p_tower_admin_user }}"
+        tower_admin_email: "{{ p_tower_admin_email }}"
+        tower_admin_password: "{{ p_tower_admin_password }}"
+        tower_broadcast_websocket_secret: "{{ p_tower_broadcast_websocket_secret }}"
+        tower_hostname: "{{ p_tower_hostname }}"
+        tower_task_image: "{{ p_tower_task_image }}"
+        tower_web_image: "{{ p_tower_web_image }}"
