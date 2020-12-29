@@ -10,7 +10,12 @@
     - name: p_kubernetes_context
       prompt: Kubernetes context
       private: no
-      default: do-nyc1-sandbox
+      default: "{{ lookup('env', 'K8S_CONTEXT') }}"
+
+    - name: p_kubernetes_namespace
+      prompt: Kubernetes namespace (for AWX things)
+      private: no
+      default: "{{ lookup('env', 'K8S_NAMESPACE') }}"
 
     - name: p_tower_admin_user
       prompt: Username of the Tower admin
@@ -55,6 +60,7 @@
         tasks_from: awx-operator.yml
       vars:
         kubernetes_context: "{{ p_kubernetes_context }}"
+        kubernetes_namespace: "{{ p_kubernetes_namespace }}"
 
     - name: Include the kubernetes/awx-instance role
       include_role:
@@ -62,6 +68,7 @@
         tasks_from: awx-instance.yml
       vars:
         kubernetes_context: "{{ p_kubernetes_context }}"
+        kubernetes_namespace: "{{ p_kubernetes_namespace }}"
         tower_admin_user: "{{ p_tower_admin_user }}"
         tower_admin_email: "{{ p_tower_admin_email }}"
         tower_admin_password: "{{ p_tower_admin_password }}"
