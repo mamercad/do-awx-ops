@@ -1,11 +1,3 @@
-# mmercado/awx-ops
+# Ansible AWX on DigitalOcean
 
-Stands up AWX using the AWX Operator on DigitalOcean's cloud. Terraform brings up the infrastructure (Kubernetes cluster) and Ansible brings up the application.
-
-## Terraform
-
-Place yourself in the `tf/` directory and `terraform init/plan/apply`. You'll need to set some variables in `tf/variables.tf`.
-
-## Ansible
-
-Once you have a cluster, just run the playbook in the `ansible/` directory like this `ansible-playbook -i localhost, -c local kubernetes.yml -v`, it'll prompt for a few variables. You'll need the `openshift` Python module.
+Stands up AWX using the [AWX Operator](https://github.com/ansible/awx-operator/) on [DigitalOcean](https://www.digitalocean.com/). [Terraform](https://www.terraform.io/) brings up the infrastructure ([Kubernetes](https://kubernetes.io/) cluster and a Droplet for [PostgreSQL](https://www.postgresql.org/)) and [Ansible](https://www.ansible.com/) brings up the application. Check the `Makefile` and `example.env` :)
