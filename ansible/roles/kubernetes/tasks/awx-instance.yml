@@ -28,14 +28,14 @@
         namespace: "{{ kubernetes_namespace }}"
       spec:
         deployment_type: awx
-        tower_admin_user: "{{ tower_admin_user | default('test') }}"
-        tower_admin_email: "{{ tower_admin_email | default('test@example.com') }}"
-        tower_admin_password: "{{ tower_admin_password | default('changeme') }}"
-        tower_broadcast_websocket_secret: "{{ tower_broadcast_websocket_secret | default('changeme') }}"
+        tower_admin_user: "{{ tower_admin_user }}"
+        tower_admin_email: "{{ tower_admin_email }}"
+        tower_admin_password: "{{ tower_admin_password }}"
+        tower_broadcast_websocket_secret: "{{ tower_broadcast_websocket_secret }}"
         tower_ingress_type: Ingress
-        tower_hostname: "{{ tower_hostname | default('awx.mycompany.com') }}"
-        tower_task_image: "{{ tower_task_image | default('ansible/awx:15.0.0') }}"
-        tower_web_image: "{{ tower_task_image | default('ansible/awx:15.0.0') }}"
+        tower_hostname: "{{ tower_hostname }}"
+        tower_task_image: "{{ tower_task_image }}"
+        tower_web_image: "{{ tower_task_image }}"
         external_database: true
 
 - name: Wait for awx-service to be created
