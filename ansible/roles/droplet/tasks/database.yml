@@ -2,6 +2,7 @@
   apt:
     state: present
     name: "{{ item }}"
+    update_cache: yes
   loop:
     - postgresql-10
     - postgresql-server-dev-10
