@@ -10,52 +10,77 @@
     - name: p_kubernetes_context
       prompt: Kubernetes context
       private: no
-      default: "{{ lookup('env', 'K8S_CONTEXT') }}"
+      default: "{{ lookup('env', 'K8S_CONTEXT') | default(omit) }}"
 
     - name: p_kubernetes_namespace
       prompt: Kubernetes namespace (for AWX things)
       private: no
-      default: "{{ lookup('env', 'K8S_NAMESPACE') }}"
+      default: "{{ lookup('env', 'K8S_NAMESPACE') | default(omit) }}"
 
     - name: p_tower_admin_user
       prompt: Username of the Tower admin
       private: no
-      default: admin
+      default: "{{ lookup('env', 'AWX_ADMIN_USER') | default('admin') }}"
 
     - name: p_tower_admin_email
       prompt: Email address of the Tower admin
       private: no
-      default: admin@example.com
+      default: "{{ lookup('env', 'AWX_ADMIN_EMAIL') | default('admin@example.com') }}"
 
     - name: p_tower_admin_password
       prompt: Password of the Tower admin
       private: yes
-      default: supersecretpassword123!!!
+      default: "{{ lookup('env', 'AWX_ADMIN_PASSWORD') | default(omit) }}"
 
     - name: p_tower_broadcast_websocket_secret
       prompt: Secret of the Tower broadcast websocket
       private: yes
-      default: supersecretpassword123!!!
+      default: "{{ lookup('env', 'AWX_WEBSOCKET_SECRET') | default(omit) }}"
 
     - name: p_tower_hostname
       prompt: Hostname of the Tower instance (Ingress)
       private: no
-      default: awx.example.com
+      default: "{{ lookup('env', 'AWX_HOSTNAME') | default('awx.example.com') }}"
 
     - name: p_tower_task_image
       prompt: Tower task image version/tag
       private: no
-      default: ansible/awx:15.0.0
+      default: "{{ lookup('env', 'AWX_TASK_IMAGE') | default('ansible/awx:15.0.0') }}"
 
     - name: p_tower_web_image
       prompt: Tower web image version/tag
       private: no
-      default: ansible/awx:15.0.0
+      default: "{{ lookup('env', 'AWX_WEB_IMAGE') | default('ansible/awx:15.0.0') }}"
 
     - name: p_tower_web_svc_type
       prompt: Tower web service type (ClusterIP, LoadBalancer, etc)
       private: no
-      default: LoadBalancer
+      default: "{{ lookup('env', 'AWX_WEB_SVC_TYPE') | default('LoadBalancer') }}"
+
+    - name: p_awx_database_host
+      prompt: External database hostname
+      private: no
+      default: "{{ lookup('env', 'AWX_DATABASE_HOST') | default(omit) }}"
+
+    - name: p_awx_database_port
+      prompt: External database port
+      private: no
+      default: "{{ lookup('env', 'AWX_DATABASE_PORT') | default(omit) }}"
+
+    - name: p_awx_database_database
+      prompt: External database name
+      private: no
+      default: "{{ lookup('env', 'AWX_DATABASE_DATABASE') | default(omit) }}"
+
+    - name: p_awx_database_username
+      prompt: External database username
+      private: no
+      default: "{{ lookup('env', 'AWX_DATABASE_USERNAME') | default(omit) }}"
+
+    - name: p_awx_database_password
+      prompt: External database password
+      private: no
+      default: "{{ lookup('env', 'AWX_DATABASE_PASSWORD') | default(omit) }}"
 
   tasks:
 
@@ -82,3 +107,8 @@
         tower_task_image: "{{ p_tower_task_image }}"
         tower_web_image: "{{ p_tower_web_image }}"
         tower_web_svc_type: "{{ p_tower_web_svc_type }}"
+        awx_database_host: "{{ p_awx_database_host }}"
+        awx_database_port: "{{ p_awx_database_port }}"
+        awx_database_database: "{{ p_awx_database_database }}"
+        awx_database_username: "{{ p_awx_database_username }}"
+        awx_database_password: "{{ p_awx_database_password }}"
