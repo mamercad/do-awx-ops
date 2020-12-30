@@ -4,33 +4,6 @@
   gather_facts: no
   become: no
 
-  vars_prompt:
-
-    - name: p_awx_database_host
-      prompt: External database hostname
-      private: no
-      default: "{{ lookup('env', 'AWX_DATABASE_HOST') | default(omit) }}"
-
-    - name: p_awx_database_port
-      prompt: External database port
-      private: no
-      default: "{{ lookup('env', 'AWX_DATABASE_PORT') | default(omit) }}"
-
-    - name: p_awx_database_database
-      prompt: External database name
-      private: no
-      default: "{{ lookup('env', 'AWX_DATABASE_DATABASE') | default(omit) }}"
-
-    - name: p_awx_database_username
-      prompt: External database username
-      private: no
-      default: "{{ lookup('env', 'AWX_DATABASE_USERNAME') | default(omit) }}"
-
-    - name: p_awx_database_password
-      prompt: External database password
-      private: no
-      default: "{{ lookup('env', 'AWX_DATABASE_PASSWORD') | default(omit) }}"
-
   tasks:
 
     - name: Include the droplet/database role
@@ -38,8 +11,7 @@
         name: droplet
         tasks_from: database.yml
       vars:
-        awx_database_host: "{{ p_awx_database_host }}"
-        awx_database_port: "{{ p_awx_database_port }}"
-        awx_database_database: "{{ p_awx_database_database }}"
-        awx_database_username: "{{ p_awx_database_username }}"
-        awx_database_password: "{{ p_awx_database_password }}"
+        awx_database_port: "{{ lookup('env', 'AWX_DATABASE_PORT') }}"
+        awx_database_database: "{{ lookup('env', 'AWX_DATABASE_DATABASE') }}"
+        awx_database_username: "{{ lookup('env', 'AWX_DATABASE_USERNAME') }}"
+        awx_database_password: "{{ lookup('env', AWX_DATABASE_PASSWORD') }}"
