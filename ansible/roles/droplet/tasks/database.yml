@@ -1,0 +1,59 @@
+- name: Install PostgreSQL 10 and friends
+  apt:
+    state: present
+    name: "{{ item }}"
+  loop:
+    - postgresql-10
+    - postgresql-server-dev-10
+  become: yes
+
+- name: Install python3-pip
+  apt:
+    state: present
+    name: python3-pip
+  become: yes
+
+- name: Install psycopg2
+  pip:
+    state: present
+    name: psycopg2
+  become: yes
+
+- name: Create a database for AWX named awx
+  community.general.postgresql_db:
+    state: present
+    name: "{{ awx_database_database }}"
+  become: yes
+  become_user: postgres
+
+- name: Grant ALL/ALL on AWX database to awx
+  community.general.postgresql_user:
+    state: present
+    db: "{{ awx_database_database }}"
+    name: "{{ awx_database_username }}"
+    password: "{{ awx_database_password }}"
+    priv: ALL/ALL
+    expires: infinity
+  become: yes
+  become_user: postgres
+
+- name: Set postgresql listen_addresses to *
+  community.general.postgresql_set:
+    name: listen_addresses
+    value: '*'
+  become: yes
+  become_user: postgres
+  notify: Restart postgresql
+
+- name: Grant awx connect to awx
+  community.general.postgresql_pg_hba:
+    dest: /etc/postgresql/10/main/pg_hba.conf
+    backup: yes
+    contype: host
+    users: "{{ awx_database_username }}"
+    source: all # Hrm, should get the egress IPs for the k8s cluster
+    databases: "{{ awx_database_database }}"
+    method: password
+  become: yes
+  become_user: postgres
+  notify: Restart postgresql
