@@ -1,3 +1,6 @@
+variable "environment" {
+  type = string
+}
 variable "do_api_token" {
   type = string
 }
