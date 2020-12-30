@@ -14,4 +14,4 @@
         awx_database_port: "{{ lookup('env', 'AWX_DATABASE_PORT') }}"
         awx_database_database: "{{ lookup('env', 'AWX_DATABASE_DATABASE') }}"
         awx_database_username: "{{ lookup('env', 'AWX_DATABASE_USERNAME') }}"
-        awx_database_password: "{{ lookup('env', AWX_DATABASE_PASSWORD') }}"
+        awx_database_password: "{{ lookup('env', 'AWX_DATABASE_PASSWORD') }}"
