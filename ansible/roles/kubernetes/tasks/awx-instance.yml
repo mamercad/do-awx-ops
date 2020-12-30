@@ -1,3 +1,21 @@
+- name: Create a Secret for PostgreSQL
+  community.kubernetes.k8s:
+    state: present
+    context: "{{ kubernetes_context }}"
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: awx-postgres-configuration
+        namespace: "{{ kubernetes_namespace }}"
+      stringData:
+        host: "{{ awx_database_host }}"
+        port: "{{ awx_database_port }}"
+        database: "{{ awx_database_database }}"
+        username: "{{ awx_database_username }}"
+        password: "{{ awx_database_password }}"
+      type: Opaque
+
 - name: Create an AWX Instance
   community.kubernetes.k8s:
     state: present
@@ -16,6 +34,17 @@
         tower_broadcast_websocket_secret: "{{ tower_broadcast_websocket_secret | default('changeme') }}"
         tower_ingress_type: Ingress
         tower_hostname: "{{ tower_hostname | default('awx.mycompany.com') }}"
+        tower_task_image: "{{ tower_task_image | default('ansible/awx:15.0.0') }}"
+        tower_web_image: "{{ tower_task_image | default('ansible/awx:15.0.0') }}"
+        external_database: true
+
+- name: Wait for awx-service to be created
+  shell: kubectl -n {{ kubernetes_namespace }} get service/awx-service
+  ignore_errors: yes
+  register: awx_service_exists
+  until: awx_service_exists.rc == 0
+  retries: 10
+  delay: 60
 
 - name: Patch the awx-service type
   community.kubernetes.k8s:
